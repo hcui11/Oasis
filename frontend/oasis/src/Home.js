@@ -65,6 +65,7 @@ const Home = ({ goToHome, goToListings }) => {
                                 Welcome {firebase.auth().currentUser.displayName}
                             </a>
                             <div className="navbar-dropdown is-boxed">
+                                <a className="navbar-item">{firebase.auth().currentUser.email}</a>
                                 <a className="navbar-item" onClick={() => firebase.auth().signOut()}>Sign-out</a>
                             </div>
                         </div>
