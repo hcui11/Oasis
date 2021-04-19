@@ -19,9 +19,11 @@ firebase.initializeApp(firebaseConfig);
 
 class App extends Component {
   state = {
-    page: "login",
+    page: "home",
     isSignedIn: false
   }
+
+  venuves = []
 
   getPage = () => {
     return this.state.page;
@@ -43,47 +45,54 @@ class App extends Component {
     this.setState({ page: "listing", isSignedIn: true })
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     this.unregisterAuthObserver = firebase.auth().onAuthStateChanged(
-      (user) => this.setState({ isSignedIn: !!user })
+      (user) => this.setState({ page: "home", isSignedIn: !!user })
     );
-  }
 
-  // Make sure we un-register Firebase observers when the component unmounts.
-  componentWillUnmount() {
-    this.unregisterAuthObserver();
-  }
+    const idToken = await firebase.auth().currentUser?.getIdToken()
+    
+    console.log(idToken)
+    const response = await fetch('http://localhost:4000/venues', {
+      mode: "cors",
+      headers: {
+        'Authorization': idToken,
+      }
+    })
 
-  render() {
-    // return (
-    //   <div className="App">
-    //     {
-    //       (this.getPage() === "login")
-    //         ? <Login goToHome={this.goToHome} />
-    //         : (this.getPage() === "home")
-    //           ? <Home goToHome={this.goToHome} goToListings={this.goToListings} />
-    //           : (this.getPage() === "listings")
-    //             ? <Listings goToHome={this.goToHome} goToListings={this.goToListings} goToListing={this.goToListing} />
-    //             : <Listing goToHome={this.goToHome} goToListings={this.goToListings} />
-    //     }
-    //   </div>
-    // )
-
-    if (!this.state.isSignedIn) {
-      return (
-        <div>
-          <Login goToHome={this.goToHome} uiConfig={this.uiConfig}/>
-        </div>
-      );
+    if (response.status === 401) {
+      return console.log('unauthorized')
     }
+
+    this.venues = await response.json()
+  }
+
+// Make sure we un-register Firebase observers when the component unmounts.
+componentWillUnmount() {
+  this.unregisterAuthObserver();
+}
+
+render() {
+  if (!this.state.isSignedIn) {
     return (
       <div>
-        <Home goToHome={this.goToHome} goToListings={this.goToListings} />
-        {/* <p>Welcome {firebase.auth().currentUser.displayName}! You are now signed-in!</p>
-        <a onClick={() => firebase.auth().signOut()}>Sign-out</a> */}
+        <Login goToHome={this.goToHome} uiConfig={this.uiConfig} />
       </div>
     );
-  };
+  }
+  console.log(firebase.auth().currentUser?.getIdToken())
+  return (
+    <div>
+      {
+        (this.getPage() === "home")
+          ? <Home goToHome={this.goToHome} goToListings={this.goToListings} />
+          : (this.getPage() === "listings")
+            ? <Listings venues={this.venues} goToHome={this.goToHome} goToListings={this.goToListings} goToListing={this.goToListing} />
+            : <Listing goToHome={this.goToHome} goToListings={this.goToListings} />
+      }
+    </div>
+  );
+};
 }
 
 export default App;
