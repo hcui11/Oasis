@@ -20,7 +20,7 @@ const Login = ({goToHome}) => {
   return (
     <section className="hero is-fullheight">
       <div className="hero-body has-text-centered">
-        <div className="login" style={{'background-color': '#004d6f'}}>
+        <div className="login" style={{'backgroundColor': '#004d6f'}}>
           <img src={oasis_logo} width="325px" />
           {/* <form>
             <div className="field">

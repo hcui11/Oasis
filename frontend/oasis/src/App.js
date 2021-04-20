@@ -17,30 +17,72 @@ var firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 
-class App extends Component {
+class SignedInComponent extends Component {
   state = {
-    page: "login",
-    isSignedIn: false
+    page: "home",
   }
+
+  venues = []
 
   getPage = () => {
     return this.state.page;
   }
 
   goToHome = () => {
-    this.setState({ page: "home", isSignedIn: true });
+    this.setState({ page: "home"});
   }
 
   goToLogin = () => {
-    this.setState({ page: "login", isSignedIn: false });
+    this.setState({ page: "login"});
   }
 
   goToListings = () => {
-    this.setState({ page: "listings", isSignedIn: true });
+    this.setState({ page: "listings"});
   }
 
   goToListing = () => {
-    this.setState({ page: "listing", isSignedIn: true })
+    this.setState({ page: "listing"})
+  }
+
+  async componentDidMount() {
+    const idToken = await firebase.auth().currentUser?.getIdToken()
+
+    const response = await fetch('https://rtrwvwtohe.execute-api.us-east-1.amazonaws.com/dev/venues', {
+      mode: "cors",
+      headers: {
+        'Authorization': idToken,
+      }
+    })
+
+    if (response.status === 401) {
+      return console.log('unauthorized')
+    }
+
+    this.venues = await response.json()
+  }
+
+  render() {
+    return (
+      <div>
+        {
+          (this.getPage() === "home")
+            ? <Home goToHome={this.goToHome} goToListings={this.goToListings} />
+            : (this.getPage() === "listings")
+              ? <Listings venues={this.venues} goToHome={this.goToHome} goToListings={this.goToListings} goToListing={this.goToListing} />
+              : <Listing goToHome={this.goToHome} goToListings={this.goToListings} />
+        }
+      </div>
+    );
+  };
+}
+
+class App extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      isSignedIn: false,
+    };
   }
 
   componentDidMount() {
@@ -49,41 +91,20 @@ class App extends Component {
     );
   }
 
-  // Make sure we un-register Firebase observers when the component unmounts.
-  componentWillUnmount() {
+  componentDidUnmount() {
     this.unregisterAuthObserver();
   }
 
   render() {
-    // return (
-    //   <div className="App">
-    //     {
-    //       (this.getPage() === "login")
-    //         ? <Login goToHome={this.goToHome} />
-    //         : (this.getPage() === "home")
-    //           ? <Home goToHome={this.goToHome} goToListings={this.goToListings} />
-    //           : (this.getPage() === "listings")
-    //             ? <Listings goToHome={this.goToHome} goToListings={this.goToListings} goToListing={this.goToListing} />
-    //             : <Listing goToHome={this.goToHome} goToListings={this.goToListings} />
-    //     }
-    //   </div>
-    // )
-
-    if (!this.state.isSignedIn) {
-      return (
-        <div>
-          <Login goToHome={this.goToHome} uiConfig={this.uiConfig}/>
-        </div>
-      );
+    if (this.state.isSignedIn) {
+      return <SignedInComponent />;
     }
     return (
       <div>
-        <Home goToHome={this.goToHome} goToListings={this.goToListings} />
-        {/* <p>Welcome {firebase.auth().currentUser.displayName}! You are now signed-in!</p>
-        <a onClick={() => firebase.auth().signOut()}>Sign-out</a> */}
+        <Login goToHome={this.goToHome} uiConfig={this.uiConfig} />
       </div>
     );
-  };
+  }
 }
 
 export default App;
