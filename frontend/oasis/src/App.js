@@ -65,6 +65,7 @@ class SignedInComponent extends Component {
     return (
       <div>
         {
+          // Navigation Logic
           (this.getPage() === "home")
             ? <Home goToHome={this.goToHome} goToListings={this.goToListings} />
             : (this.getPage() === "listings")
