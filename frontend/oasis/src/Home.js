@@ -6,7 +6,7 @@ import { Box } from "@chakra-ui/react";
 import firebase from 'firebase';
 
 
-const Home = ({ goToHome, goToListings }) => {
+const Home = ({ goToHome, goToListings, goToHosting }) => {
     return (
         <div>
             <nav className="navbar is-dark" style={{ 'backgroundColor': '#004d6f' }}>
@@ -31,6 +31,9 @@ const Home = ({ goToHome, goToListings }) => {
                 </a>
                         <a className="navbar-item">
                             Caterers
+                </a>
+                        <a className="navbar-item" onClick={goToHosting}>
+                            Host
                 </a>
                         <a className="navbar-item">
                             Contact

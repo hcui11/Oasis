@@ -1,1 +1,4 @@
+Flask-Cors==3.0.10
 Flask==1.1.2
+google-auth==1.29.0
+requests==2.25.1

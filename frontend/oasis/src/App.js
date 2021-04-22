@@ -1,6 +1,7 @@
 import './App.css';
 import Login from './Login.js';
 import Home from './Home.js';
+import Host from './Host.js';
 import Listings from './Listings.js';
 import Listing from './Listing.js';
 import { Component } from 'react';
@@ -44,6 +45,10 @@ class SignedInComponent extends Component {
     this.setState({ page: "listing"})
   }
 
+  goToHosting = () => {
+    this.setState({ page: "host"})
+  }
+
   async componentDidMount() {
     const idToken = await firebase.auth().currentUser?.getIdToken()
 
@@ -67,10 +72,12 @@ class SignedInComponent extends Component {
         {
           // Navigation Logic
           (this.getPage() === "home")
-            ? <Home goToHome={this.goToHome} goToListings={this.goToListings} />
+            ? <Home goToHome={this.goToHome} goToListings={this.goToListings} goToHosting={this.goToHosting}/>
             : (this.getPage() === "listings")
               ? <Listings venues={this.venues} goToHome={this.goToHome} goToListings={this.goToListings} goToListing={this.goToListing} />
-              : <Listing goToHome={this.goToHome} goToListings={this.goToListings} />
+              : (this.getPage() === "host")
+                ? <Host goToHome={this.goToHome} goToListings={this.goToListings} />
+                : <Listing goToHome={this.goToHome} goToListings={this.goToListings} />
         }
       </div>
     );

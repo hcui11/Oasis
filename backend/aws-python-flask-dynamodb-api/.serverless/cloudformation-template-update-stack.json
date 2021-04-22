@@ -147,7 +147,7 @@
                   "Resource": [
                     {
                       "Fn::GetAtt": [
-                        "UsersTable",
+                        "VenuesTable",
                         "Arn"
                       ]
                     }
@@ -180,7 +180,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/aws-python-flask-dynamodb-api/dev/1616026714284-2021-03-18T00:18:34.284Z/aws-python-flask-dynamodb-api.zip"
+          "S3Key": "serverless/aws-python-flask-dynamodb-api/dev/1619069638151-2021-04-22T05:33:58.151Z/aws-python-flask-dynamodb-api.zip"
         },
         "Handler": "wsgi_handler.handler",
         "Runtime": "python3.8",
@@ -189,7 +189,8 @@
         "Timeout": 6,
         "Environment": {
           "Variables": {
-            "USERS_TABLE": "users-table-dev"
+            "USERS_TABLE": "users-table-dev",
+            "VENUES_TABLE": "venues-table-dev"
           }
         },
         "Role": {
@@ -203,14 +204,14 @@
         "ApiLogGroup"
       ]
     },
-    "ApiLambdaVersionouwTSCZ0TS2PkfZRh3lf20beS2JYPQ8G8Pisi4dP38": {
+    "ApiLambdaVersion5vlycX7789HbxyWRkDQP0zk8ecgY355x2oZuknIa5g": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "ApiLambdaFunction"
         },
-        "CodeSha256": "ykJkQAbxMvDCl7+xjaZbvaYbyDStoHiokhYVV0n7yiE="
+        "CodeSha256": "Me0qe/AiYQ2Hydybe4IPj2j1rXouYU2iL7pPeUOZg+U="
       }
     },
     "ApiGatewayRestApi": {
@@ -329,7 +330,7 @@
         "MethodResponses": []
       }
     },
-    "ApiGatewayDeployment1616026711487": {
+    "ApiGatewayDeployment1619069600714": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -400,6 +401,28 @@
         },
         "TableName": "users-table-dev"
       }
+    },
+    "VenuesTable": {
+      "Type": "AWS::DynamoDB::Table",
+      "Properties": {
+        "AttributeDefinitions": [
+          {
+            "AttributeName": "userId",
+            "AttributeType": "S"
+          }
+        ],
+        "KeySchema": [
+          {
+            "AttributeName": "userId",
+            "KeyType": "HASH"
+          }
+        ],
+        "ProvisionedThroughput": {
+          "ReadCapacityUnits": 1,
+          "WriteCapacityUnits": 1
+        },
+        "TableName": "venues-table-dev"
+      }
     }
   },
   "Outputs": {
@@ -411,7 +434,7 @@
     "ApiLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "ApiLambdaVersionouwTSCZ0TS2PkfZRh3lf20beS2JYPQ8G8Pisi4dP38"
+        "Ref": "ApiLambdaVersion5vlycX7789HbxyWRkDQP0zk8ecgY355x2oZuknIa5g"
       }
     },
     "ServiceEndpoint": {
