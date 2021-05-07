@@ -6,7 +6,7 @@ import { Box } from "@chakra-ui/react";
 import firebase from 'firebase';
 
 
-const Home = ({ goToHome, goToListings, goToHosting }) => {
+const Home = ({ goToHome, goToListings, goToPlanners, goToHosting }) => {
     return (
         <div>
             <nav className="navbar is-dark" style={{ 'backgroundColor': '#004d6f' }}>
@@ -25,33 +25,33 @@ const Home = ({ goToHome, goToListings, goToHosting }) => {
                     <div className="navbar-start">
                         <a className="navbar-item" onClick={goToHome}>
                             Home
-                </a>
+                        </a>
                         <a className="navbar-item" onClick={goToListings}>
                             Venues
-                </a>
-                        <a className="navbar-item">
-                            Caterers
-                </a>
+                        </a>
+                        <a className="navbar-item" onClick={goToPlanners}>
+                            Planners
+                        </a>
                         <a className="navbar-item" onClick={goToHosting}>
                             Host
-                </a>
+                        </a>
                         <a className="navbar-item">
                             Contact
-                </a>
+                        </a>
                         <div className="navbar-item has-dropdown is-hoverable">
                             <a className="navbar-link" href="/documentation/overview/start/">
                                 More
-                    </a>
+                            </a>
                             <div className="navbar-dropdown is-boxed">
                                 <a className="navbar-item" href="/documentation/overview/start/">
                                     Mechandise
-                        </a>
+                                </a>
                                 <a className="navbar-item" href="https://bulma.io/documentation/modifiers/syntax/">
                                     Extras
-                        </a>
+                                </a>
                                 <a className="navbar-item" href="https://bulma.io/documentation/columns/basics/">
                                     Media
-                        </a>
+                                </a>
                             </div>
                         </div>
                     </div>

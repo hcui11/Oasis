@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Box, SimpleGrid, Image, Flex, Link, Button } from "@chakra-ui/react";
 import firebase from 'firebase';
 
-const Listings = ({ venues, goToHome, goToListings, goToPlanners, goToHosting, goToListing }) => {
+const Planners = ({ goToHome, goToListings, goToPlanners, goToHosting }) => {
 
   const [search, setSearch] = useState("");
 
@@ -11,7 +11,43 @@ const Listings = ({ venues, goToHome, goToListings, goToPlanners, goToHosting, g
     setSearch(document.getElementById("search").value);
   };
 
-  const [listingsDocs, setListingDocs] = useState(venues);
+  const [listingsDocs, setListingDocs] = useState([
+    {
+      photoURL: 'https://images.squarespace-cdn.com/content/535ef55de4b0cd207fffc25d/1567798620819-PLDTUXF7N45MYC1YF16M/amo+logo+5.png?content-type=image%2Fpng',
+      business: 'Amorology Weddings',
+      name: 'Troy and Heather',
+      website: 'https://www.amorologyweddings.com/',
+      location: 'Southern California'
+    },
+    {
+      photoURL: 'https://www.kylemichelleweddings.com/uploads/7/0/9/5/7095515/published/logo.png',
+      business: 'Kyle Michelle Weddings',
+      name: 'Kristin',
+      website: 'https://www.kylemichelleweddings.com/',
+      location: 'New York, Philadelphia, South Jersey'
+    },
+    {
+      photoURL: 'https://assets.website-files.com/5bff02a76e7fb70dc36af7ac/5c001e583e231100798ac820_static1.squarespace.png',
+      business: 'Events By Jesse',
+      name: 'Jesse',
+      website: 'https://www.eventsbyjesse.com/',
+      location: 'New York'
+    },
+    {
+      photoURL: 'http://static.showit.co/file/hPau0jJxQQWZ7_ruN8bNyA/shared/mayfield_events_logo_-_primary-01.svg',
+      business: 'Mayfield Events',
+      name: 'Laura',
+      website: 'https://mayfieldevents.com/',
+      location: 'Texas, Arizona, Colorado, New Mexico'
+    },
+    {
+      photoURL: 'https://images.squarespace-cdn.com/content/57a918d69f7456ca517f90c3/1588131429736-RE4RBUV29HC5OACODJ6K/socal-wedding-consultant-best-wedding-planner-in-southern-california.png',
+      business: 'Events By WC',
+      name: 'Love',
+      website: 'http://www.eventsbywc.com/',
+      location: 'Southern California'
+    }
+  ]);
 
   return (
     <div>
@@ -111,22 +147,23 @@ const Listings = ({ venues, goToHome, goToListings, goToPlanners, goToHosting, g
         spacing={20}
       >
         {listingsDocs.map((listingDoc) => {
-          if (search == "" || listingDoc.venue.toLowerCase().includes(search.toLowerCase()) || listingDoc.tags.toLowerCase().includes(search.toLowerCase())) {
+          if (search == "" || listingDoc.business.toLowerCase().includes(search.toLowerCase()) || listingDoc.location.toLowerCase().includes(search.toLowerCase())) {
             return (<Box marginY="auto">
-              <Link direction="column" href={`mailto:${listingDoc.contact}`}>
+
+              <Link direction="column" href={listingDoc.website} textAlign="center" isExternal>
                 <Image
                   maxWidth={"100%"}
                   borderRadius={10}
-                  src={`${listingDoc.photoUrl}`}
+                  src={`${listingDoc.photoURL}`}
                 />
-                <Box>{listingDoc.venue} by {listingDoc.name}</Box>
+                {/* <Box>{listingDoc.business} with {listingDoc.name}</Box> */}
               </Link>
             </Box>);
           }
         })}
       </SimpleGrid>
-    </div >
+    </div>
   );
 };
 
-export default Listings;
+export default Planners;

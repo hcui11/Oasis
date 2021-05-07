@@ -1,7 +1,7 @@
 import oasis_logo from './oasis.png'
 import firebase from 'firebase';
 
-const Host = ({ goToHome, goToListings }) => {
+const Host = ({ goToHome, goToListings, goToPlanners, goToHosting }) => {
     async function create_venue() {
         const idToken = await firebase.auth().currentUser?.getIdToken()
 
@@ -40,30 +40,33 @@ const Host = ({ goToHome, goToListings }) => {
                     <div className="navbar-start">
                         <a className="navbar-item" onClick={goToHome}>
                             Home
-                </a>
+                        </a>
                         <a className="navbar-item" onClick={goToListings}>
                             Venues
-                </a>
-                        <a className="navbar-item">
-                            Caterers
-                </a>
+                        </a>
+                        <a className="navbar-item" onClick={goToPlanners}>
+                            Planners
+                        </a>
+                        <a className="navbar-item" onClick={goToHosting}>
+                            Host
+                        </a>
                         <a className="navbar-item">
                             Contact
-                </a>
+                        </a>
                         <div className="navbar-item has-dropdown is-hoverable">
                             <a className="navbar-link" href="/documentation/overview/start/">
                                 More
-                    </a>
+                            </a>
                             <div className="navbar-dropdown is-boxed">
                                 <a className="navbar-item" href="/documentation/overview/start/">
                                     Mechandise
-                        </a>
+                                </a>
                                 <a className="navbar-item" href="https://bulma.io/documentation/modifiers/syntax/">
                                     Extras
-                        </a>
+                                </a>
                                 <a className="navbar-item" href="https://bulma.io/documentation/columns/basics/">
                                     Media
-                        </a>
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -93,17 +96,17 @@ const Host = ({ goToHome, goToListings }) => {
                         <form>
                             <div className="field">
                                 <div className="control">
-                                    <input id="photoUrl" className="input is-medium is-rounded" type="email" placeholder="Photo URL" autocomplete="username" required />
+                                    <input id="photoUrl" className="input is-medium is-rounded" placeholder="Photo URL" autocomplete="username" required />
                                 </div>
                             </div>
                             <div className="field">
                                 <div className="control">
-                                    <input id="venue" className="input is-medium is-rounded" type="email" placeholder="Venue Name" autocomplete="current-password" required />
+                                    <input id="venue" className="input is-medium is-rounded" placeholder="Venue Name" autocomplete="current-password" required />
                                 </div>
                             </div>
                             <div className="field">
                                 <div className="control">
-                                    <input id="tags" className="input is-medium is-rounded" type="email" placeholder="Tags" autocomplete="current-password" required />
+                                    <input id="tags" className="input is-medium is-rounded" placeholder="Tags" autocomplete="current-password" required />
                                 </div>
                             </div>
                             <br />
